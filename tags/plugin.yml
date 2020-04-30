@@ -1,0 +1,6 @@
+main: rain1208\tags\Main
+name: tagshop
+api: 3.0.0
+version: 1.0.0
+author: rain1208
+depend: ["EconomyAPI","MiningLevelSystem"]

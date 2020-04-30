@@ -1,0 +1,6 @@
+name: policeSystem
+main: rain1208\policeSystem\Main
+version: 1.0.0
+api: 3.0.0
+author: rain1208
+load: POSTWORLD

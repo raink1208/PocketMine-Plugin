@@ -1,0 +1,12 @@
+main: rain1208\HeighLimit\Main
+name: HeighLimit
+api: 3.0.0
+version: 1.0.0
+author: rain1208
+load: POSTWORLD
+
+commands:
+  wdlim:
+    permission: op
+    description: "worldLimitのFormを送ります"
+    permission-message: "opではないので使えません"

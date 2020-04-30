@@ -1,0 +1,10 @@
+name: areaMessage
+main: rain1208\areaMessage\Main
+version: 1.0.0
+api: 3.0.0
+author: rain1208
+
+commands:
+  areamsg:
+    description: "areamsg"
+    usage: "/areamsg < create | pos | list >"
