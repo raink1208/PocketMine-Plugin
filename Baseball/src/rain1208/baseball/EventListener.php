@@ -3,14 +3,13 @@
 
 namespace rain1208\baseball;
 
-
 use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Projectile;
 use pocketmine\entity\projectile\Snowball;
 use pocketmine\event\entity\ProjectileHitEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
@@ -18,17 +17,27 @@ use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\Player;
 
+
+
 class EventListener implements Listener
 {
+    /** @var Snowball */
+    private $ball;
 
-    public function onProjectileHit(ProjectileHitEvent $event) {
-        $entity = $event->getEntity();
-        if (!($entity instanceof Snowball)) {
+    public function onHit(PlayerToggleSneakEvent $event) {
+        if ($event->isSneaking()) {
             return;
         }
-        if ($event instanceof ProjectileHitEntityEvent) {
-            $player = $event->getEntityHit();
-            if ($player instanceof Player) {
+        $player = $event->getPlayer();
+        $hand = $player->getInventory()->getItemInHand();
+        if ($hand->getId() === 280 && isset($this->ball) && $hand->getCustomName() === "バット") {
+            var_dump("バット");
+            $ballpos = $this->ball->getPosition();
+            $p = $player->getPosition();
+            $p->add(0,1,0);
+            if ($p->distance($ballpos) <= 2.5) {
+                var_dump("meet");
+                $this->ball->kill();
                 $pos = $player->getPosition();
 
                 $aimPos = new Vector3(
@@ -58,5 +67,31 @@ class EventListener implements Listener
                 $snowball->spawnToAll();
             }
         }
+    }
+
+    public function onLaunchProjectile(ProjectileLaunchEvent $event) {
+        if ($event->getEntity() instanceof Snowball) {
+            var_dump("setBall");
+            $this->ball = $event->getEntity();
+        }
+    }
+
+    public function onProjectileHit(ProjectileHitEvent $event) {
+        $this->ball = null;
+        $entity = $event->getEntity();
+        if (!($entity instanceof Snowball)) {
+            return;
+        }
+        if ($event instanceof ProjectileHitEntityEvent) {
+            $player = $event->getEntityHit();
+            if ($player instanceof Player) {
+                 switch ($player->getInventory()->getItemInHand()->getId()) {
+                     case 0:
+                         $player->getInventory()->setItemInHand(new \pocketmine\item\Snowball(1));
+                         break;
+                 }
+            }
+        }
+
     }
 }
