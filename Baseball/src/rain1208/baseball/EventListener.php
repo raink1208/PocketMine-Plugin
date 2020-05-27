@@ -36,6 +36,7 @@ class EventListener implements Listener
             $p->add(0,1,0);
             if ($p->distance($ballpos) <= 2.5) {
                 $this->ball->kill();
+                $this->ball = null;
                 $pos = $player->getPosition();
 
                 $aimPos = new Vector3(
