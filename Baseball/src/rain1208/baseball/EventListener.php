@@ -31,12 +31,10 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $hand = $player->getInventory()->getItemInHand();
         if ($hand->getId() === 280 && isset($this->ball) && $hand->getCustomName() === "バット") {
-            var_dump("バット");
             $ballpos = $this->ball->getPosition();
             $p = $player->getPosition();
             $p->add(0,1,0);
             if ($p->distance($ballpos) <= 2.5) {
-                var_dump("meet");
                 $this->ball->kill();
                 $pos = $player->getPosition();
 
@@ -71,7 +69,6 @@ class EventListener implements Listener
 
     public function onLaunchProjectile(ProjectileLaunchEvent $event) {
         if ($event->getEntity() instanceof Snowball) {
-            var_dump("setBall");
             $this->ball = $event->getEntity();
         }
     }
