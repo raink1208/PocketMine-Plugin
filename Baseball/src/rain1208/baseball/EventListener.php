@@ -5,11 +5,15 @@ namespace rain1208\baseball;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Snowball;
+use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\entity\ProjectileHitEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerToggleSneakEvent;
+use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
+use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
@@ -31,13 +35,13 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $hand = $player->getInventory()->getItemInHand();
         if ($hand->getId() === 280 && isset($this->ball) && $hand->getCustomName() === "バット") {
-            $ballpos = $this->ball->getPosition();
+            $ballpos = new Position($this->ball->getX(),$this->ball->getY(),$this->ball->getZ());
             $p = $player->getPosition();
-            $p->add(0,1,0);
+            $p->y += 1;
             if ($p->distance($ballpos) <= 2.5) {
                 $this->ball->kill();
                 $this->ball = null;
-                $pos = $player->getPosition();
+                $pos = $ballpos;
 
                 $aimPos = new Vector3(
                     -sin($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI),
@@ -47,7 +51,7 @@ class EventListener implements Listener
                 $nbt = new CompoundTag("", [
                     "Pos" => new ListTag("Pos", [
                         new DoubleTag("", $pos->x),
-                        new DoubleTag("", $pos->y + $player->getEyeHeight()),
+                        new DoubleTag("", $pos->y),
                         new DoubleTag("", $pos->z)
                     ]),
                     "Motion" => new ListTag("Motion", [
@@ -56,7 +60,7 @@ class EventListener implements Listener
                         new DoubleTag("", $aimPos->z)
                     ]),
                     "Rotation" => new ListTag("Rotation", [
-                        new FloatTag("", $player->yaw),
+                        new FloatTag("", $player->yaw+0.5),
                         new FloatTag("", $player->pitch)
                     ]),
                 ]);
@@ -90,6 +94,13 @@ class EventListener implements Listener
                  }
             }
         }
-
+        if ($event instanceof ProjectileHitBlockEvent) {
+            $x = $event->getBlockHit()->getX();
+            $y = $event->getBlockHit()->getY();
+            $z = $event->getBlockHit()->getZ();
+            $pos = new Vector3($x,$y+0.8,$z);
+            $item = ItemFactory::get(Item::SNOWBALL);
+            $event->getBlockHit()->getLevel()->dropItem($pos,$item);
+        }
     }
 }
