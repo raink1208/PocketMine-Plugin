@@ -64,7 +64,7 @@ class EventListener implements Listener
                         new FloatTag("", $player->pitch)
                     ]),
                 ]);
-                $f = 2;
+                $f = ConfigManager::get();
                 $snowball = Entity::createEntity("Snowball", $player->getLevel(), $nbt, $player);
                 $snowball->setMotion($snowball->getMotion()->multiply($f));
                 $snowball->spawnToAll();
