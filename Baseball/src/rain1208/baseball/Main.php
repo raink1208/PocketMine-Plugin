@@ -23,7 +23,8 @@ class Main extends PluginBase
                 if ($sender instanceof Player) {
                     $item = new Stick(1);
                     $item->setCustomName("バット");
-                    $sender->getInventory()->setItemInHand($item);
+                    $sender->getInventory()->addItem($item);
+                    $sender->sendMessage("バットを配布しました");
                 }
                 break;
         }
