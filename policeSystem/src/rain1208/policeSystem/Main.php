@@ -22,17 +22,17 @@ class Main extends PluginBase
     }
 
     private function registarCommand(): void {
-        $map = $this->getServer()->getCommandMap();
-        $command = ["pmode" => "rain1208\policeSystem\command\pmode",
-                    "ptp" => "rain1208\policeSystem\command\ptp",
-                    "police" => "rain1208\policeSystem\command\police",
-                    "addpolice" => "rain1208\policeSystem\command\policeAdd",
-                    "delpolice" => "rain1208\policeSystem\command\policeDel"];
+    $map = $this->getServer()->getCommandMap();
+    $command = ["pmode" => "rain1208\policeSystem\command\pmode",
+        "ptp" => "rain1208\policeSystem\command\ptp",
+        "police" => "rain1208\policeSystem\command\police",
+        "addpolice" => "rain1208\policeSystem\command\policeAdd",
+        "delpolice" => "rain1208\policeSystem\command\policeDel"];
 
-        foreach ($command as $item => $class) {
-            $map->register("policeSystem", new $class($this));
-        }
+    foreach ($command as $item => $class) {
+        $map->register("policeSystem", new $class($this));
     }
+}
     public function onDisable()
     {
         $this->getLogger()->info("policeSystemを無効化しました");

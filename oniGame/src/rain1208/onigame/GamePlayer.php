@@ -5,28 +5,31 @@ namespace rain1208\onigame;
 
 
 use pocketmine\Player;
+use rain1208\onigame\map\Map;
 
 class GamePlayer extends Player
 {
     public function initPlayer():void
     {
-        $config = Main::getInstance()->getConfigManager()->getConfig(1);
+        $config = Main::getInstance()->getConfigManager()->getConfig(ConfigManager::PLAYERS);
         if (empty($config->get($this->getName()))) {
             $data = [
                 "isOni" => false,
                 "isPlaying" => false,
+                "isSpectating" => false
             ];
             $config->set($this->getName(),$data);
             $config->save();
         } else {
-            $config->get($this->getName())->set("isOni",false);
-            $config->get($this->getName())->set("isPlaying",false);
+            $this->set("isOni",false);
+            $this->set("isPlaying",false);
+            $this->set("isSpectating",false);
         }
     }
 
     public function getAllData(): array
     {
-        return Main::getInstance()->getConfigManager()->getConfig(1)->getAll()[$this->getName()];
+        return Main::getInstance()->getConfigManager()->getConfig(ConfigManager::PLAYERS)->getAll()[$this->getName()];
     }
 
     public function get($key)
@@ -38,7 +41,7 @@ class GamePlayer extends Player
     {
         $data = $this->getAllData();
         $data[$key] = $val;
-        $config = Main::getInstance()->getConfigManager()->getConfig(1);
+        $config = Main::getInstance()->getConfigManager()->getConfig(ConfigManager::PLAYERS);
         $config->set($this->getName(),$data);
         $config->save();
     }
@@ -51,5 +54,31 @@ class GamePlayer extends Player
     public function setPlaying(bool $bool)
     {
         $this->set("isPlaying",$bool);
+    }
+
+    public function isOni(): bool
+    {
+        return $this->get("isOni");
+    }
+
+    public function setOni(bool $bool = true)
+    {
+        $this->set("isOni",$bool);
+    }
+
+    public function isSpectating(): bool
+    {
+        return $this->get("isSpectating");
+    }
+
+    public function setSpectating(bool $bool = true)
+    {
+        $this->set("isSpectating",$bool);
+        $this->getLevel()->getName();
+    }
+
+    public function startGame(Map $map = null):void
+    {
+        if (is_null($map)) $map = $this->
     }
 }

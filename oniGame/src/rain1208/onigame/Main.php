@@ -21,6 +21,20 @@ class Main extends PluginBase
         $this->getServer()->getPluginManager()->registerEvents(new GameEventListener(), $this);
 
         $this->configManager = new ConfigManager();
+
+        $this->registarCommand();
+    }
+
+    private function registarCommand(): void {
+        $map = $this->getServer()->getCommandMap();
+        $command = [
+            "setOni" => "rain1208\onigame\command\SetOni",
+            "startOni" => "rain1208\onigame\command\StartOni"
+        ];
+
+        foreach ($command as $item => $class) {
+            $map->register("onigame", new $class($this));
+        }
     }
 
     public static function getInstance()
@@ -32,4 +46,6 @@ class Main extends PluginBase
     {
         return $this->configManager;
     }
+
+
 }

@@ -35,6 +35,12 @@ class Map
         return $this->world;
     }
 
+    public function reset(): void
+    {
+        $this->getWorld()->unload();
+        $this->copyLevel();
+    }
+
     public function copyLevel():void
     {
         $from = $this->getOriginal()->getName();
