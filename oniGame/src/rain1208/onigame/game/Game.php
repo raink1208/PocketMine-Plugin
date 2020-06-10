@@ -18,7 +18,6 @@ class Game
     private $spectates;
 
     private $map;
-    private $game;
 
     private $oni;
 
@@ -29,6 +28,7 @@ class Game
         $this->map = $map;
         $map->reset();
         Main::getInstance()->getScheduler()->scheduleRepeatingTask($this->gameTask = new GameTask($this), $sec = 20);
+        Server::getInstance()->broadcastMessage("ゲームを開始します");
     }
 
     public function initPlayer(Player $player,bool $join = true)

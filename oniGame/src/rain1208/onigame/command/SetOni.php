@@ -13,6 +13,6 @@ class SetOni extends PluginCommand
     {
         parent::__construct("setoni", $owner);
 
-        $this->setDescription("oniごっこを開始します");
+        $this->setDescription("鬼を設定します");
     }
 }

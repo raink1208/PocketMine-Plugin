@@ -5,7 +5,6 @@ namespace rain1208\onigame;
 
 
 use pocketmine\Player;
-use rain1208\onigame\map\Map;
 
 class GamePlayer extends Player
 {
@@ -75,10 +74,5 @@ class GamePlayer extends Player
     {
         $this->set("isSpectating",$bool);
         $this->getLevel()->getName();
-    }
-
-    public function startGame(Map $map = null):void
-    {
-        if (is_null($map)) $map = $this->
     }
 }

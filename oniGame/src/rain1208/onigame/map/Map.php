@@ -14,6 +14,7 @@ class Map
     private $name;
     private $original;
 
+    /** @var Level */
     private $world;
 
     public function __construct(string $name ,Level $original)
@@ -37,40 +38,41 @@ class Map
 
     public function reset(): void
     {
-        $this->getWorld()->unload();
+        Server::getInstance()->unloadLevel($this->getWorld());
         $this->copyLevel();
     }
 
-    public function copyLevel():void
+    public function copyLevel(): void
     {
         $from = $this->getOriginal()->getName();
-        $copy = $from."copy";
-        $frompath = Server::getInstance()->getDataPath()."worlds/".$from;
-        $copypath = Server::getInstance()->getDataPath()."worlds/".$copy;
-        if (is_dir($frompath)) return;
-        $this->copy($frompath,$copypath);
+        $copy = $from . "copy";
+        $fromPath = Server::getInstance()->getDataPath() . "worlds/" . $from;
+        $copyPath = Server::getInstance()->getDataPath() . "worlds/" . $copy;
+        if (!is_dir($fromPath)) return;
+        $this->copy($fromPath, $copyPath);
         $nbt = new BigEndianNBTStream();
-        $worldData = $nbt->readCompressed(file_get_contents($copypath."/level.dat"));
-        $data = $worldData->getCompoundTag("Data");
-        $data->setString("LevelName",$copy);
-        file_put_contents($copypath."/level.dat",$nbt->writeCompressed(new CompoundTag("",array($data))));
+        $levelData = $nbt->readCompressed(file_get_contents($copyPath . "/level.dat"));
+        $data = $levelData->getCompoundTag("Data");
+        $data->setString("LevelName", $copy);
+        file_put_contents($copyPath . "/level.dat", $nbt->writeCompressed(new CompoundTag("", array($data))));
         Server::getInstance()->loadLevel($copy);
         $this->world = Server::getInstance()->getLevelByName($copy);
     }
 
-    private function copy(string $from,string $copy)
+    private function copy(string $from, string $copy): void
     {
         if (!is_dir($from)) return;
         $objs = scandir($from);
-        mkdir($copy);
+        @mkdir($copy);
         foreach ($objs as $obj) {
             if ($obj !== "." && $obj !== "..") {
-                if (is_dir($from."/".$obj)) {
-                    $this->copy($from."/".$obj,$copy."/".$obj);
+                if (is_dir($from . "/" . $obj)) {
+                    $this->copy($from . "/" . $obj, $copy . "/" . $obj);
                 } else {
                     copy($from . "/" . $obj, $copy . "/" . $obj);
                 }
             }
         }
+        $obj = null;
     }
 }

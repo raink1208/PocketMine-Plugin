@@ -44,6 +44,10 @@ class Main extends PluginBase implements Listener
         return true;
     }
 
+
+    /**
+     * @param BlockPlaceEvent $event
+     */
     public function onPlace(BlockPlaceEvent $event) {
         if ($event->getPlayer()->isOp()) return;
         $worldName = $event->getBlock()->getLevel()->getName();
