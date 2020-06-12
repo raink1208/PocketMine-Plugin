@@ -27,6 +27,7 @@ class SetMapForm implements Form
         }
         if (!is_string($data[2])) {
             $this->message = "マップの名前が入力されていません";
+            $player->sendForm($this);
             return;
         }
         Main::getInstance()->getMapManager()->setMap($data[2],Server::getInstance()->getLevelByName($this->worlds[$data[1]]));
@@ -37,7 +38,7 @@ class SetMapForm implements Form
     {
         return [
             "type" => "custom_form",
-            "title" => "SetMapForm",
+            "title" => "鬼ごっこマップの追加",
             "content" => [
                 [
                     "type" => "label",
