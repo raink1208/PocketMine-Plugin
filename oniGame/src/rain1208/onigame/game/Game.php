@@ -27,11 +27,11 @@ class Game
         $this->oni = $oni;
         $this->map = $map;
         $map->reset();
-        Main::getInstance()->getScheduler()->scheduleRepeatingTask($this->gameTask = new GameTask($this), $sec = 20);
+        Main::getInstance()->getScheduler()->scheduleRepeatingTask($this->gameTask = new GameTask($this), 20);
         Server::getInstance()->broadcastMessage("ゲームを開始します");
     }
 
-    public function initPlayer(Player $player,bool $join = true)
+    public function initPlayer(Player $player)
     {
         if ($player->isOnline()) {
             $player->setGamemode(Player::SURVIVAL);
@@ -55,7 +55,7 @@ class Game
     {
         $player->setPlaying(false);
         $player->setSpectating(false);
-        $this->initPlayer($player,false);
+        $this->initPlayer($player);
     }
 
     public function spectate(Player $player)
@@ -73,5 +73,11 @@ class Game
             $players[] = $player;
         }
         return $players;
+    }
+
+    public function endGame(): void
+    {
+        Server::getInstance()->broadcastMessage("ゲームを終了します");
+        Main::getInstance()->getScheduler()->cancelTask($this->gameTask->getTaskId());
     }
 }
