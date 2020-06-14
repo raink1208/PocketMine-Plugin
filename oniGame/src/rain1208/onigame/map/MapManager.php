@@ -32,11 +32,7 @@ class MapManager
 
     public function getAllMap():array
     {
-        $maps = [];
-        foreach ($this->maps as $map) {
-            $maps[] = $map;
-        }
-        return $maps;
+        return $this->maps;
     }
 
     public function setMap(string $name,Level $world): void

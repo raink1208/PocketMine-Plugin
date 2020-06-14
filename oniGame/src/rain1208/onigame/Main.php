@@ -39,7 +39,9 @@ class Main extends PluginBase
         $command = [
             "setOni" => "rain1208\onigame\command\SetOni",
             "startOni" => "rain1208\onigame\command\StartOni",
-            "setMap" => "rain1208\onigame\command\SetMap"
+            "setMap" => "rain1208\onigame\command\SetMap",
+            "join" => "rain1208\onigame\command\JoinGame",
+            "createoni" => "rain1208\onigame\command\CreateGame"
         ];
 
         foreach ($command as $item => $class) {
@@ -62,9 +64,18 @@ class Main extends PluginBase
         return $this->mapManager;
     }
 
-    public function startGame(GamePlayer $oni,Map $map = null): void
+    public function createGame(): Game
     {
-        if (is_null($map)) $map = $this->mapManager->random();
-        if (!is_null($map)) $this->game = new Game($map,$oni);
+        return $this->game = new Game();
+    }
+
+    public function getGame(): ?Game
+    {
+        return $this->game;
+    }
+
+    public function startGame(): void
+    {
+        $this->getGame()->startGame();
     }
 }

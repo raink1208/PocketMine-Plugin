@@ -50,7 +50,7 @@ class GamePlayer extends Player
         return $this->get("isPlaying");
     }
 
-    public function setPlaying(bool $bool)
+    public function setPlaying(bool $bool = true)
     {
         $this->set("isPlaying",$bool);
     }

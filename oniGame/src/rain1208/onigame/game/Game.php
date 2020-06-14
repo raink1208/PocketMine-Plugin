@@ -5,28 +5,31 @@ namespace rain1208\onigame\game;
 
 
 use pocketmine\Player;
+use pocketmine\scheduler\Task;
 use pocketmine\Server;
+use rain1208\onigame\GamePlayer;
 use rain1208\onigame\Main;
 use rain1208\onigame\map\Map;
 
 class Game
 {
+    /** @var Task */
     private $gameTask;
 
-    /** @var Player[] */
+    /** @var GamePlayer[] */
     private $players;
     private $spectates;
 
     private $map;
 
-    private $oni;
-
-
-    public function __construct(Map $map,Player $oni)
+    public function setMap(Map $map): void
     {
-        $this->oni = $oni;
         $this->map = $map;
         $map->reset();
+    }
+
+    public function startGame(): void
+    {
         Main::getInstance()->getScheduler()->scheduleRepeatingTask($this->gameTask = new GameTask($this), 20);
         Server::getInstance()->broadcastMessage("ゲームを開始します");
     }

@@ -10,27 +10,22 @@ use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\Server;
 use rain1208\onigame\Main;
-use rain1208\onigame\map\Map;
 
 
 class SetMapForm implements Form
 {
-    private $worlds;
-
-    private $message = "";
-
     public function handleResponse(Player $player, $data): void
     {
-        if ($data === null) {
-            $this->message = "入力されていない欄があります";
+        $mapManager = Main::getInstance()->getMapManager();
+        if (empty($data[1])) {
+            $player->sendMessage("マップ名が入力されていません");
             return;
         }
-        if (!is_string($data[2])) {
-            $this->message = "マップの名前が入力されていません";
-            $player->sendForm($this);
+        if ($mapManager->mapExists($data[1])) {
+            $player->sendMessage("既にその名前のマップはあります");
             return;
         }
-        Main::getInstance()->getMapManager()->setMap($data[2],Server::getInstance()->getLevelByName($this->worlds[$data[1]]));
+        $mapManager->setMap($data[1],$this->getAllWorlds()[$data[0]]);
         $player->sendMessage("鬼ごっこのマップを登録しました");
     }
 
@@ -41,13 +36,9 @@ class SetMapForm implements Form
             "title" => "鬼ごっこマップの追加",
             "content" => [
                 [
-                    "type" => "label",
-                    "text" => $this->message
-                ],
-                [
                     "type" => "dropdown",
                     "text" => "ワールドの選択",
-                    "options" => $this->getAllWorld(),
+                    "options" => array_map(function (Level $world) { return $world->getName(); },$this->getAllWorlds()),
                     "default" => 0
                 ],
                 [
@@ -57,12 +48,8 @@ class SetMapForm implements Form
             ]
         ];
     }
-    private function getAllWorld()
+    private function getAllWorlds(): array
     {
-        $worlds = [];
-        foreach (Server::getInstance()->getLevels() as $world) {
-            array_push($worlds,$world->getName());
-        }
-        return $this->worlds = $worlds;
+        return Server::getInstance()->getLevels();
     }
 }

@@ -18,7 +18,11 @@ class MainMapForm implements Form
     public function jsonSerialize()
     {
         return [
+            "type" => "form",
+            "title" => "Map Menu",
+            "buttons" => [
 
+            ]
         ];
     }
 }

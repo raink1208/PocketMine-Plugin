@@ -6,9 +6,9 @@ namespace rain1208\onigame\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
+use pocketmine\Player;
 use pocketmine\plugin\Plugin;
-use rain1208\onigame\GamePlayer;
-use rain1208\onigame\Main;
+use rain1208\onigame\game\form\StartGameForm;
 
 class StartOni extends PluginCommand
 {
@@ -21,10 +21,8 @@ class StartOni extends PluginCommand
 
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
-        if ($sender instanceof GamePlayer) {
-            Main::getInstance()->startGame($sender);
-        } else {
-            var_dump("貴方はGamePlayerではありません");
+        if ($sender instanceof Player && $sender->isOp()) {
+            $sender->sendForm(new StartGameForm());
         }
     }
 }
