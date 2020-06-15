@@ -18,9 +18,10 @@ class StartGameForm implements Form
 
     public function handleResponse(Player $player, $data): void
     {
-        $player->sendMessage($this->maps[$data[0]]);
-        $player->sendMessage($this->players[$data[2]]->getName());
-        Main::getInstance()->getGame()->setMap($this->maps[$data[0]]);
+        var_dump($this->maps);
+        $player->sendMessage("world: ".array_keys($this->maps)[$data[0]]);
+        $player->sendMessage("oni: ".$this->players[$data[2]]->getName());
+        Main::getInstance()->getGame()->setMap($this->maps[array_keys($this->maps)[$data[2]]]);
         $this->players[$data[2]]->setOni();
         Main::getInstance()->startGame();
     }
