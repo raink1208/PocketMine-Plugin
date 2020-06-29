@@ -1,0 +1,14 @@
+main: worldp\Main
+name: worldp
+api: 3.0.0
+version: 1.0.0
+
+commands:
+  worldbreak:
+    aliases: ["wdbrk"]
+  worldput:
+    aliases: ["wdpt"]
+  canbreak:
+    aliases: ["canbrk"]
+  canput:
+    aliases: ["canpt"]
