@@ -14,13 +14,10 @@ class Main extends PluginBase
 {
     /** @var Config */
     public $config;
-    /** @var Config */
-    public $received;
 
     public function onEnable()
     {
         $this->config = new Config($this->getDataFolder()."code.yml",Config::YAML);
-        $this->received = new Config($this->getDataFolder()."received.yml",Config::YAML);
     }
 
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool

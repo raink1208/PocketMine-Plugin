@@ -2,13 +2,13 @@ main: rain1208\code\Main
 name: code
 author: rain1208
 api: 3.0.0
-version: 2.0.0
+version: 2.1.1
 depend:
   - EconomyAPI
 
 commands:
   code:
-    description: "アイテムを受け取ります"
+    description: "引き換えコードを適用します"
   addcode:
     description: "コードを追加します"
     permission: op

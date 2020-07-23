@@ -52,9 +52,6 @@ class AddCodeForm implements Form
         $config->set($data[0],$this->template);
         $config->save();
 
-        $this->main->received->set($data[0],[]);
-        $this->main->received->save();
-
         $player->sendMessage("コードを追加しました");
     }
 
