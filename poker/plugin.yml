@@ -1,0 +1,9 @@
+name: poker
+main: rain1208\poker\Main
+api: 3.0.0
+version: 1.0.0
+author: rain1208
+
+commands:
+  poker:
+    description: "PokerのMain Form"
