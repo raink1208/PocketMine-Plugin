@@ -13,7 +13,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\level\Position;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
@@ -34,14 +34,12 @@ class EventListener implements Listener
         }
         $player = $event->getPlayer();
         $hand = $player->getInventory()->getItemInHand();
-        if ($hand->getId() === 280 && isset($this->ball) && $hand->getCustomName() === "バット") {
-            $ballpos = new Position($this->ball->getX(),$this->ball->getY(),$this->ball->getZ());
-            $p = $player->getPosition();
-            $p->y += 1;
-            if ($p->distance($ballpos) <= 2.5) {
+        if ($hand->getId() === ItemIds::STICK && isset($this->ball) && $hand->getCustomName() === "バット") {
+            $pos = (new Vector3($player))->add(0,1.2,0);
+            $ballpos = $this->ball->getLocation();
+            if ($pos->distance($ballpos) <= 2.5) {
                 $this->ball->kill();
                 $this->ball = null;
-                $pos = $ballpos;
 
                 $aimPos = new Vector3(
                     -sin($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI),
@@ -50,9 +48,9 @@ class EventListener implements Listener
                 );
                 $nbt = new CompoundTag("", [
                     "Pos" => new ListTag("Pos", [
-                        new DoubleTag("", $pos->x),
-                        new DoubleTag("", $pos->y),
-                        new DoubleTag("", $pos->z)
+                        new DoubleTag("", $ballpos->x),
+                        new DoubleTag("", $ballpos->y),
+                        new DoubleTag("", $ballpos->z)
                     ]),
                     "Motion" => new ListTag("Motion", [
                         new DoubleTag("", $aimPos->x),

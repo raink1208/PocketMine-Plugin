@@ -5,6 +5,8 @@ namespace rain1208\baseball;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\entity\object\ItemEntity;
+use pocketmine\item\ItemIds;
 use pocketmine\item\Stick;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -43,6 +45,15 @@ class Main extends PluginBase
                     }
                 } else {
                     $sender->sendMessage("/multiply <数値>");
+                }
+                break;
+            case "clearball":
+                if ($sender instanceof Player) {
+                    foreach ($sender->getLevel()->getEntities() as $entity) {
+                        if ($entity instanceof ItemEntity) {
+                            if ($entity->getItem()->getId() === ItemIds::SNOWBALL) $entity->kill();
+                        }
+                    }
                 }
         }
         return true;

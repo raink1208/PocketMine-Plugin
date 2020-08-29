@@ -7,5 +7,7 @@ version: 1.0.0
 commands:
   bat:
     description: "batを配布します"
+  clearball:
+    description: "ボールを消す"
   multiply:
     description: "飛距離を変更"
