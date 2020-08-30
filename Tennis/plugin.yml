@@ -1,0 +1,13 @@
+name: tennis
+main: rain1208\tennis\Main
+api: 3.0.0
+version: 1.0.0
+author: rain1208
+
+commands:
+  clearmob:
+    description: "mobをすべて消す"
+    permission: op
+  tennis:
+    description: "ボールとラケットを取得"
+    permission: op
